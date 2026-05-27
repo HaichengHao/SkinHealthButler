@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皮肤病图片上传 - AI智能诊断</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 82, 204, 0.15);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #0052cc;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .upload-area {
+            border: 2px dashed #0052cc;
+            border-radius: 12px;
+            padding: 40px 20px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-color: #f8fbff;
+        }
+
+        .upload-area:hover {
+            background-color: #eef5ff;
+            border-color: #007bff;
+        }
+
+        .upload-area.active {
+            background-color: #eef5ff;
+            border-color: #007bff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #0052cc;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #0052cc;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .browse-btn {
+            background: #0052cc;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border: none;
+            outline: none;
+        }
+
+        .browse-btn:hover {
+            background: #003d99;
+        }
+
+        .preview-container {
+            margin-top: 20px;
+            display: none;
+            position: relative;
+        }
+
+        .preview-container img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 新增：删除按钮样式 */
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .submit-btn {
+            background: #0052cc;
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .submit-btn:hover {
+            background: #003d99;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 82, 204, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .file-info {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .allowed-types {
+            background: #eef5ff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #0052cc;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .delete-btn {
+                top: -8px;
+                right: -8px;
+                padding: 4px 12px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>皮肤病AI智能诊断</h1>
+            <p>上传您的皮肤病变图片，我们的AI系统将为您提供初步诊断建议</p>
+        </div>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">点击选择图片或拖拽到此处</div>
+                <div class="upload-subtext">支持 JPG/JPEG 格式</div>
+                <button type="button" class="browse-btn">浏览文件</button>
+                <input type="file" id="fileInput" class="file-input" accept=".jpg,.jpeg" required>
+                <div class="allowed-types">仅支持 .jpg 和 .jpeg 格式文件</div>
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+                <img id="imagePreview" alt="图片预览">
+                <!-- 新增：删除按钮 -->
+                <button type="button" class="delete-btn" id="deleteBtn">✕ 删除</button>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn" disabled>开始分析</button>
+        </form>
+
+        <div class="file-info" id="fileInfo"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const submitBtn = document.getElementById('submitBtn');
+        const fileInfo = document.getElementById('fileInfo');
+        const browseBtn = document.querySelector('.browse-btn');
+        const uploadForm = document.getElementById('uploadForm');
+        const deleteBtn = document.getElementById('deleteBtn');
+
+        // 删除按钮事件监听器
+        deleteBtn.addEventListener('click', () => {
+            // 清空文件输入
+            fileInput.value = '';
+            // 隐藏预览容器
+            previewContainer.style.display = 'none';
+            // 清空文件信息
+            fileInfo.textContent = '';
+            // 禁用提交按钮
+            submitBtn.disabled = true;
+            submitBtn.textContent = '开始分析';
+        });
+
+        // 点击浏览按钮触发文件选择
+        browseBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // 点击上传区域触发文件选择
+        uploadArea.addEventListener('click', (e) => {
+            if (e.target !== browseBtn && e.target !== fileInput) {
+                fileInput.click();
+            }
+        });
+
+        // 拖拽事件
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('active');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('active');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('active');
+
+            if (e.dataTransfer.files.length) {
+                const file = e.dataTransfer.files[0];
+                handleFile(file);
+            }
+        });
+
+        // 文件选择事件
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            // 验证文件类型
+            const validTypes = ['image/jpeg', 'image/jpg'];
+            if (!validTypes.includes(file.type)) {
+                alert('请上传 JPG 或 JPEG 格式的图片！');
+                fileInput.value = '';
+                return;
+            }
+
+            // 验证文件大小（可选，比如限制5MB）
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                alert('文件大小不能超过 5MB！');
+                fileInput.value = '';
+                return;
+            }
+
+            // 显示文件信息
+            fileInfo.textContent = `已选择: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+
+            // 显示图片预览
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                previewContainer.style.display = 'block';
+                submitBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 表单提交
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!fileInput.files[0]) {
+                alert('请先选择图片！');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '上传中...';
+
+                // 修正：完整的API端点路径
+                const response = await fetch('http://127.0.0.1:8099/skin_imgs/upload/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // 检查响应状态
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert(`上传成功！\n原始文件名: ${result.filename}\n安全文件名: ${result.safe_filename}`);
+
+                    // 可选：上传成功后自动清空表单
+                    // fileInput.value = '';
+                    // previewContainer.style.display = 'none';
+                    // fileInfo.textContent = '';
+                    // submitBtn.disabled = true;
+                    // submitBtn.textContent = '开始分析';
+                } else {
+                    throw new Error(result.message || '上传失败');
+                }
+            } catch (error) {
+                console.error('上传错误:', error);
+                alert('上传失败，请重试。错误: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = '开始分析';
+            }
+        });
+    </script>
+</body>
+</html>
