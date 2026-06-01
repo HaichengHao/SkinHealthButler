@@ -7,3 +7,24 @@ sft/SkinHealthButlerV2/*.safetensors
 model_/exports/**/*.onnx
 model_/exports/**/*.pth
 model_/exports/**/*.data
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# logs / meta
+*.log
+model_/exports/**/model_meta.json
+model_/exports/**/train.log
+
+# datasets generated locally
+SkinDiseaseQA_formated.jsonl
+
+# large model files
+sft/SkinHealthButlerV2/*.safetensors
+model_/exports/**/*.onnx
+model_/exports/**/*.onnx.data
+model_/exports/**/*.pth
+model_/exports/**/*.pt
+model_/exports/**/*.ckpt
