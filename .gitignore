@@ -3,3 +3,7 @@ model_/SkinDisease
 
 .env
 .idea
+sft/SkinHealthButlerV2/*.safetensors
+model_/exports/**/*.onnx
+model_/exports/**/*.pth
+model_/exports/**/*.data
