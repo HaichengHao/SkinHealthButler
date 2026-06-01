@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "aiomysql>=0.3.2",
     "aiosqlite>=0.22.1",
+    "albumentations>=2.0.8",
     "asyncio>=4.0.0",
     "asyncpg>=0.31.0",
     "dashscope>=1.25.15",
@@ -44,7 +45,10 @@ dependencies = [
     "mkdocs>=1.6.1",
     "neo4j>=6.2.0",
     "numpy>=2.4.3",
+    "onnx>=1.19.1",
+    "onnxruntime>=1.23.2",
     "openai>=2.28.0",
+    "opencv-python>=4.13.0.92",
     "pandas>=3.0.1",
     "pdfminer>=20191125",
     "pdfminer-six==20221105",
@@ -61,10 +65,21 @@ dependencies = [
     "sqlalchemy[asyncio]>=2.0.48",
     "tavily-python>=0.7.24",
     "tiktoken>=0.12.0",
-    "torch>=2.10.0",
-    "torchaudio>=2.10.0",
-    "torchvision>=0.25.0",
+    "timm>=1.0.27",
+    "torch==2.11.0+cu128",
+    "torchaudio==2.11.0+cu128",
+    "torchvision==0.26.0+cu128",
     "typedict>=0.1.0",
     "unstructured[docx,md]>=0.22.6",
     "zai-sdk>=0.2.2",
 ]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

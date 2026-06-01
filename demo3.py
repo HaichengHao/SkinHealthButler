@@ -348,7 +348,8 @@ if __name__ == "__main__":
         server_port=6466,
         share=False,
         debug=True,
-        theme=gr.themes.Soft()
+        theme=gr.themes.Soft(),
+
     )
 
     finished_load_time = time.time()

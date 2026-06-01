@@ -1,379 +1,255 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>皮肤病图片上传 - AI智能诊断</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 82, 204, 0.15);
-            padding: 40px;
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .header {
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: #0052cc;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .upload-area {
-            border: 2px dashed #0052cc;
-            border-radius: 12px;
-            padding: 40px 20px;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            background-color: #f8fbff;
-        }
-
-        .upload-area:hover {
-            background-color: #eef5ff;
-            border-color: #007bff;
-        }
-
-        .upload-area.active {
-            background-color: #eef5ff;
-            border-color: #007bff;
-        }
-
-        .upload-icon {
-            font-size: 48px;
-            color: #0052cc;
-            margin-bottom: 15px;
-        }
-
-        .upload-text {
-            color: #0052cc;
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .upload-subtext {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .browse-btn {
-            background: #0052cc;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            border: none;
-            outline: none;
-        }
-
-        .browse-btn:hover {
-            background: #003d99;
-        }
-
-        .preview-container {
-            margin-top: 20px;
-            display: none;
-            position: relative;
-        }
-
-        .preview-container img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 新增：删除按钮样式 */
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-            padding: 6px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-top: 10px;
-            position: absolute;
-            top: -10px;
-            right: -10px;
-        }
-
-        .delete-btn:hover {
-            background: #c82333;
-        }
-
-        .submit-btn {
-            background: #0052cc;
-            color: white;
-            padding: 12px 32px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 200px;
-        }
-
-        .submit-btn:hover {
-            background: #003d99;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 82, 204, 0.3);
-        }
-
-        .submit-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .file-info {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .allowed-types {
-            background: #eef5ff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #0052cc;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 25px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .delete-btn {
-                top: -8px;
-                right: -8px;
-                padding: 4px 12px;
-                font-size: 10px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkinHealthButler · 肤康管家</title>
+  <style>
+    :root {
+      --bg: #e9f0f3; --panel: #fff; --ink: #1f2e38; --sub: #657784; --line: #d7e3ea;
+      --brand: #0b8f7f; --brand2: #17bfa8; --bot: #f7fafc; --user: #ecfdf5; --warn: #b42318;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:"Segoe UI","PingFang SC",sans-serif;color:var(--ink);
+      min-height:100vh;background:radial-gradient(circle at 8% 0%,#d2f8f2 0,transparent 25%),radial-gradient(circle at 96% 100%,#d7eefc 0,transparent 25%),var(--bg);padding:18px}
+    .shell{max-width:1180px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 16px 48px rgba(20,38,53,.12)}
+    .top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 18px;background:linear-gradient(95deg,var(--brand),var(--brand2));color:#fff}
+    .brand{display:flex;gap:12px;align-items:center}.brand img{width:42px;height:42px;border-radius:11px;background:#fff;border:2px solid #ffffffaa}
+    .brand h1{margin:0;font-size:19px}.brand p{margin:0;font-size:12px;opacity:.95}
+    .layout{display:grid;grid-template-columns:320px 1fr;min-height:80vh}
+    .side{border-right:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:12px;background:#f9fcfd}
+    .card{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px}.card h3{margin:0 0 8px;font-size:14px}
+    .muted{font-size:12px;color:var(--sub);line-height:1.45}.field{display:grid;gap:6px}.field label{font-size:12px;color:var(--sub);font-weight:600}
+    input[type=text],textarea,input[type=file]{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:14px}
+    textarea{min-height:84px;max-height:180px;resize:vertical}
+    .btn{border:0;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;border-radius:9px;padding:9px 13px;font-weight:700;cursor:pointer}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn-lite{border:1px solid var(--line);background:#fff;color:#274556;border-radius:9px;padding:8px 10px;font-weight:600;cursor:pointer}
+    .sessions{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow:auto}
+    .sess{border:1px solid var(--line);border-radius:9px;padding:8px;cursor:pointer;background:#fff;font-size:12px}
+    .sess.active{border-color:#84d9ca;background:#ecfffb}
+    .chip{display:inline-block;padding:4px 8px;border-radius:20px;border:1px solid #b7efe7;background:#e6fffb;color:#106f64;font-size:12px;font-weight:600;margin:4px 4px 0 0}
+    .main{display:flex;flex-direction:column;min-height:0}.chat{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,rgba(243,251,255,.65),#fff 30%)}
+    .msg{max-width:82%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;line-height:1.55;white-space:pre-wrap;word-break:break-word;font-size:14px}
+    .msg.user{margin-left:auto;background:var(--user);border-color:#a8e4cf}.msg.bot{margin-right:auto;background:var(--bot)}
+    .status{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);padding:8px 12px;border-top:1px solid var(--line);background:#fbfdfe}
+    .composer{padding:12px;border-top:1px solid var(--line);display:grid;gap:10px}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.err{color:var(--warn);font-size:13px;min-height:18px}
+    .preview{display:none}.preview img{width:100%;max-height:170px;object-fit:contain;border:1px solid var(--line);border-radius:9px;background:#f8fbfd}
+    @media (max-width:940px){.layout{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line)}.msg{max-width:92%}}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>皮肤病AI智能诊断</h1>
-            <p>上传您的皮肤病变图片，我们的AI系统将为您提供初步诊断建议</p>
-        </div>
-
-        <form id="uploadForm" enctype="multipart/form-data">
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">📁</div>
-                <div class="upload-text">点击选择图片或拖拽到此处</div>
-                <div class="upload-subtext">支持 JPG/JPEG 格式</div>
-                <button type="button" class="browse-btn">浏览文件</button>
-                <input type="file" id="fileInput" class="file-input" accept=".jpg,.jpeg" required>
-                <div class="allowed-types">仅支持 .jpg 和 .jpeg 格式文件</div>
-            </div>
-
-            <div class="preview-container" id="previewContainer">
-                <img id="imagePreview" alt="图片预览">
-                <!-- 新增：删除按钮 -->
-                <button type="button" class="delete-btn" id="deleteBtn">✕ 删除</button>
-            </div>
-
-            <button type="submit" class="submit-btn" id="submitBtn" disabled>开始分析</button>
-        </form>
-
-        <div class="file-info" id="fileInfo"></div>
+<div class="shell">
+  <div class="top">
+    <div class="brand">
+      <img src="/imgs/icon.png" alt="icon" />
+      <div><h1>SkinHealthButler 肤康管家</h1><p>CV 分类 + NLP 对话 · 自动会话 · 流式打字机</p></div>
     </div>
+    <div style="font-size:12px;opacity:.95">上传图片可辅助分类，再结合描述生成建议</div>
+  </div>
 
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const previewContainer = document.getElementById('previewContainer');
-        const imagePreview = document.getElementById('imagePreview');
-        const submitBtn = document.getElementById('submitBtn');
-        const fileInfo = document.getElementById('fileInfo');
-        const browseBtn = document.querySelector('.browse-btn');
-        const uploadForm = document.getElementById('uploadForm');
-        const deleteBtn = document.getElementById('deleteBtn');
+  <div class="layout">
+    <aside class="side">
+      <section class="card">
+        <h3>连接设置</h3>
+        <div class="field"><label>API Base URL</label><input id="apiBase" type="text" value="http://127.0.0.1:8099" /></div>
+      </section>
 
-        // 删除按钮事件监听器
-        deleteBtn.addEventListener('click', () => {
-            // 清空文件输入
-            fileInput.value = '';
-            // 隐藏预览容器
-            previewContainer.style.display = 'none';
-            // 清空文件信息
-            fileInfo.textContent = '';
-            // 禁用提交按钮
-            submitBtn.disabled = true;
-            submitBtn.textContent = '开始分析';
-        });
+      <section class="card">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">会话</h3><button id="newSession" class="btn-lite">+ 新建会话</button></div>
+        <div id="sessions" class="sessions"></div>
+      </section>
 
-        // 点击浏览按钮触发文件选择
-        browseBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
+      <section class="card">
+        <h3>图片预览</h3>
+        <div id="preview" class="preview"><img id="previewImg" alt="preview" /></div>
+        <div id="previewText" class="muted">选择图片后将显示预览</div>
+      </section>
 
-        // 点击上传区域触发文件选择
-        uploadArea.addEventListener('click', (e) => {
-            if (e.target !== browseBtn && e.target !== fileInput) {
-                fileInput.click();
-            }
-        });
+      <section class="card">
+        <h3>分类结果</h3>
+        <div id="clsMain" class="muted">等待图片上传并发送后显示</div>
+        <div id="clsTopk"></div>
+      </section>
+    </aside>
 
-        // 拖拽事件
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('active');
-        });
+    <main class="main">
+      <div id="chat" class="chat"></div>
+      <div class="status"><span id="status">空闲</span><span>快捷键：Ctrl/⌘ + Enter 发送</span></div>
+      <div class="composer">
+        <textarea id="message" placeholder="请输入症状描述，如：脸颊发红发痒 3 天，晚上更明显"></textarea>
+        <div class="row">
+          <input id="image" type="file" accept="image/jpeg,image/png,image/bmp" />
+          <button id="send" class="btn">发送（流式）</button>
+        </div>
+        <div id="error" class="err"></div>
+      </div>
+    </main>
+  </div>
+</div>
 
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('active');
-        });
+<script>
+  const chatEl = document.getElementById('chat');
+  const msgEl = document.getElementById('message');
+  const sendBtn = document.getElementById('send');
+  const imageEl = document.getElementById('image');
+  const apiBaseEl = document.getElementById('apiBase');
+  const statusEl = document.getElementById('status');
+  const errorEl = document.getElementById('error');
+  const clsMainEl = document.getElementById('clsMain');
+  const clsTopkEl = document.getElementById('clsTopk');
+  const previewWrap = document.getElementById('preview');
+  const previewImg = document.getElementById('previewImg');
+  const previewText = document.getElementById('previewText');
+  const sessionsEl = document.getElementById('sessions');
+  const newSessionBtn = document.getElementById('newSession');
 
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('active');
+  const chats = new Map();
+  let currentSessionId = '';
 
-            if (e.dataTransfer.files.length) {
-                const file = e.dataTransfer.files[0];
-                handleFile(file);
-            }
-        });
+  const queue = [];
+  let typingTimer = null;
 
-        // 文件选择事件
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length) {
-                handleFile(e.target.files[0]);
-            }
-        });
+  function makeSessionId(){
+    const t = Date.now().toString(36);
+    const r = Math.random().toString(36).slice(2,8);
+    return `chat-${t}-${r}`;
+  }
 
-        function handleFile(file) {
-            // 验证文件类型
-            const validTypes = ['image/jpeg', 'image/jpg'];
-            if (!validTypes.includes(file.type)) {
-                alert('请上传 JPG 或 JPEG 格式的图片！');
-                fileInput.value = '';
-                return;
-            }
+  function ensureSession(id){
+    if(!chats.has(id)) chats.set(id,{id,title:'新会话',messages:[]});
+    return chats.get(id);
+  }
 
-            // 验证文件大小（可选，比如限制5MB）
-            const maxSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-                alert('文件大小不能超过 5MB！');
-                fileInput.value = '';
-                return;
-            }
+  function renderSessionList(){
+    sessionsEl.innerHTML='';
+    [...chats.values()].forEach(s=>{
+      const d=document.createElement('div');
+      d.className='sess'+(s.id===currentSessionId?' active':'');
+      d.textContent=s.title;
+      d.title=s.id;
+      d.onclick=()=>switchSession(s.id);
+      sessionsEl.appendChild(d);
+    });
+  }
 
-            // 显示文件信息
-            fileInfo.textContent = `已选择: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+  function switchSession(id){
+    currentSessionId=id; ensureSession(id);
+    chatEl.innerHTML='';
+    const sess=chats.get(id);
+    sess.messages.forEach(m=>addMsg(m.text,m.role,false));
+    renderSessionList();
+  }
 
-            // 显示图片预览
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imagePreview.src = e.target.result;
-                previewContainer.style.display = 'block';
-                submitBtn.disabled = false;
-            };
-            reader.readAsDataURL(file);
+  function newSession(){
+    const id=makeSessionId();
+    ensureSession(id);
+    switchSession(id);
+    clsMainEl.textContent='等待图片上传并发送后显示';
+    clsTopkEl.innerHTML='';
+  }
+
+  function addMsg(text, role, persist=true){
+    const div=document.createElement('div');
+    div.className=`msg ${role}`;
+    div.textContent=text;
+    chatEl.appendChild(div);
+    chatEl.scrollTop=chatEl.scrollHeight;
+    if(persist){
+      const sess=ensureSession(currentSessionId);
+      sess.messages.push({role,text});
+      if(sess.title==='新会话' && role==='user') sess.title=text.slice(0,24);
+      renderSessionList();
+    }
+    return div;
+  }
+
+  function renderCls(meta){
+    clsTopkEl.innerHTML='';
+    if(!meta || !meta.classification){ clsMainEl.textContent='本轮未使用图片分类'; return; }
+    const c=meta.classification;
+    clsMainEl.innerHTML=`Top1：<strong>${c.label}</strong>（${(c.confidence*100).toFixed(2)}%）`;
+    (c.topk||[]).forEach(i=>{
+      const sp=document.createElement('span'); sp.className='chip';
+      sp.textContent=`${i.label} ${(i.confidence*100).toFixed(1)}%`; clsTopkEl.appendChild(sp);
+    });
+  }
+
+  function startTypewriter(target){
+    if(typingTimer) return;
+    typingTimer=setInterval(()=>{
+      if(queue.length===0){ clearInterval(typingTimer); typingTimer=null; return; }
+      target.textContent += queue.shift();
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }, 14);
+  }
+
+  imageEl.addEventListener('change', ()=>{
+    const f=imageEl.files[0];
+    if(!f){ previewWrap.style.display='none'; previewText.textContent='选择图片后将显示预览'; return; }
+    const url=URL.createObjectURL(f);
+    previewImg.src=url;
+    previewWrap.style.display='block';
+    previewText.textContent=`${f.name} · ${(f.size/1024).toFixed(1)} KB`;
+  });
+
+  async function send(){
+    const message=msgEl.value.trim();
+    if(!message){ errorEl.textContent='请输入问题后再发送'; return; }
+    errorEl.textContent=''; statusEl.textContent='正在生成...'; sendBtn.disabled=true;
+
+    addMsg(message,'user',true);
+    const botMsg=addMsg('', 'bot', false);
+
+    const fd=new FormData();
+    fd.append('message', message);
+    fd.append('session_id', currentSessionId);
+    if(imageEl.files[0]) fd.append('image', imageEl.files[0]);
+
+    try{
+      const base=apiBaseEl.value.trim().replace(/\/$/, '');
+      const resp=await fetch(`${base}/chat/respond_stream`, {method:'POST', body:fd});
+      if(!resp.ok || !resp.body) throw new Error(`HTTP ${resp.status}`);
+
+      const reader=resp.body.getReader();
+      const decoder=new TextDecoder('utf-8');
+      let buffer='';
+
+      while(true){
+        const {value,done}=await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value,{stream:true});
+        const events=buffer.split('\n\n');
+        buffer=events.pop()||'';
+
+        for(const evt of events){
+          const line=evt.split('\n').find(l=>l.startsWith('data: '));
+          if(!line) continue;
+          const payload=JSON.parse(line.slice(6));
+          if(payload.type==='meta') renderCls(payload);
+          else if(payload.type==='chunk'){
+            const chars=[...payload.delta];
+            queue.push(...chars);
+            startTypewriter(botMsg);
+          } else if(payload.type==='done') statusEl.textContent='完成';
         }
+      }
 
-        // 表单提交
-        uploadForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+      while(queue.length>0){ await new Promise(r=>setTimeout(r,20)); }
+      const sess=ensureSession(currentSessionId);
+      sess.messages.push({role:'bot', text:botMsg.textContent});
+    }catch(e){
+      errorEl.textContent=`请求失败：${e.message}`; statusEl.textContent='失败';
+    }finally{
+      sendBtn.disabled=false; msgEl.value=''; imageEl.value='';
+    }
+  }
 
-            if (!fileInput.files[0]) {
-                alert('请先选择图片！');
-                return;
-            }
+  newSessionBtn.addEventListener('click', newSession);
+  sendBtn.addEventListener('click', send);
+  msgEl.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter') send(); });
 
-            const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-
-            try {
-                submitBtn.disabled = true;
-                submitBtn.textContent = '上传中...';
-
-                // 修正：完整的API端点路径
-                const response = await fetch('http://127.0.0.1:8099/skin_imgs/upload/', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                // 检查响应状态
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    alert(`上传成功！\n原始文件名: ${result.filename}\n安全文件名: ${result.safe_filename}`);
-
-                    // 可选：上传成功后自动清空表单
-                    // fileInput.value = '';
-                    // previewContainer.style.display = 'none';
-                    // fileInfo.textContent = '';
-                    // submitBtn.disabled = true;
-                    // submitBtn.textContent = '开始分析';
-                } else {
-                    throw new Error(result.message || '上传失败');
-                }
-            } catch (error) {
-                console.error('上传错误:', error);
-                alert('上传失败，请重试。错误: ' + error.message);
-                submitBtn.disabled = false;
-                submitBtn.textContent = '开始分析';
-            }
-        });
-    </script>
+  newSession();
+</script>
 </body>
 </html>

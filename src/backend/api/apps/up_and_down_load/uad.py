@@ -5,7 +5,7 @@ import os
 from fastapi import APIRouter, UploadFile,HTTPException
 from pathlib import Path
 import aiofiles
-from configs.project_default_configs import project_path
+from backend.configs.project_default_configs import project_path
 from loguru import logger
 from uuid import uuid4
 

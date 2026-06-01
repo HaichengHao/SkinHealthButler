@@ -5,9 +5,10 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 load_dotenv()
-project_path = Path(__file__).parents[1]
+project_path = Path(__file__).parents[1].parent
 
 EMAIL_PWD = os.getenv('MAIL_VAL')
 EMAIL_SENDER = os.getenv('MAIL_SENDER')
 
+print(project_path)
 
