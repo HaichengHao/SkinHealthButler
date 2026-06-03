@@ -71,8 +71,14 @@ class SkinDiseaseClassifier:
         class_names = meta["class_names"]
         image_size = int(meta.get("image_size", 256))
 
-        onnx_path = str(export_path / "best_model.onnx") if prefer_onnx else None
-        ckpt_path = str(export_path / "best_model.pth")
+        meta_onnx_path = meta.get("onnx_path")
+        meta_ckpt_path = meta.get("checkpoint_path")
+
+        default_onnx_path = export_path / "best_model.onnx"
+        default_ckpt_path = export_path / "best_model.pth"
+
+        onnx_path = str(meta_onnx_path or default_onnx_path) if prefer_onnx else None
+        ckpt_path = str(meta_ckpt_path or default_ckpt_path)
 
         return cls(
             class_names=class_names,

@@ -56,6 +56,7 @@ if not REDIS_URL:
 _tokenizer = None
 _model = None
 _classifier = None
+_classifier_error = None
 
 
 def strip_think_tags(text: str) -> str:
@@ -114,12 +115,19 @@ def get_llm():
 
 
 def get_classifier():
-    global _classifier
+    global _classifier, _classifier_error
+    if _classifier_error is not None:
+        raise _classifier_error
     if _classifier is None:
         from model_.skin_classifier import SkinDiseaseClassifier
 
-        _classifier = SkinDiseaseClassifier.from_export_dir(SKIN_CLS_EXPORT_DIR, prefer_onnx=True)
-        logger.info(f"Skin classifier loaded from: {SKIN_CLS_EXPORT_DIR}")
+        try:
+            _classifier = SkinDiseaseClassifier.from_export_dir(SKIN_CLS_EXPORT_DIR, prefer_onnx=True)
+            logger.info(f"Skin classifier loaded from: {SKIN_CLS_EXPORT_DIR}")
+        except Exception as exc:
+            _classifier_error = exc
+            logger.exception("Skin classifier failed to load")
+            raise
     return _classifier
 
 
@@ -159,6 +167,31 @@ def _classify_optional_image(image: UploadFile | None):
     return cls_result, image_label, image_conf, temp_path
 
 
+async def classify_uploaded_image(image: UploadFile | None):
+    cls_result = None
+    image_label = None
+    image_conf = None
+    classification_error = None
+
+    if image is None:
+        return cls_result, image_label, image_conf, classification_error
+
+    _, _, _, temp_path = _classify_optional_image(image)
+    content = await image.read()
+    temp_path.write_bytes(content)
+    try:
+        cls_result = get_classifier().predict(str(temp_path), topk=3)
+        image_label = cls_result.top1_label
+        image_conf = cls_result.top1_confidence
+    except Exception as exc:
+        classification_error = str(exc)
+        logger.exception("Image classification failed")
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+    return cls_result, image_label, image_conf, classification_error
+
+
 @chat_rt.post("/respond")
 async def respond(
     message: str = Form(...),
@@ -168,20 +201,7 @@ async def respond(
     if not message.strip():
         raise HTTPException(status_code=400, detail="message 不能为空")
 
-    cls_result = None
-    image_label = None
-    image_conf = None
-    temp_path = None
-    if image is not None:
-        _, _, _, temp_path = _classify_optional_image(image)
-        content = await image.read()
-        temp_path.write_bytes(content)
-        try:
-            cls_result = get_classifier().predict(str(temp_path), topk=3)
-            image_label = cls_result.top1_label
-            image_conf = cls_result.top1_confidence
-        finally:
-            temp_path.unlink(missing_ok=True)
+    cls_result, image_label, image_conf, classification_error = await classify_uploaded_image(image)
 
     redis_history = get_session_history(session_id)
     history_messages = redis_history.messages
@@ -201,6 +221,7 @@ async def respond(
             "confidence": image_conf,
             "topk": cls_result.topk,
         },
+        "classification_error": classification_error,
     }
 
 
@@ -213,20 +234,7 @@ async def respond_stream(
     if not message.strip():
         raise HTTPException(status_code=400, detail="message 不能为空")
 
-    cls_result = None
-    image_label = None
-    image_conf = None
-    temp_path = None
-    if image is not None:
-        _, _, _, temp_path = _classify_optional_image(image)
-        content = await image.read()
-        temp_path.write_bytes(content)
-        try:
-            cls_result = get_classifier().predict(str(temp_path), topk=3)
-            image_label = cls_result.top1_label
-            image_conf = cls_result.top1_confidence
-        finally:
-            temp_path.unlink(missing_ok=True)
+    cls_result, image_label, image_conf, classification_error = await classify_uploaded_image(image)
 
     redis_history = get_session_history(session_id)
     history_messages = redis_history.messages
@@ -258,7 +266,7 @@ async def respond_stream(
                 "confidence": image_conf,
                 "topk": cls_result.topk,
             }
-        yield f"data: {json.dumps({'type': 'meta', 'classification': classification}, ensure_ascii=False)}\n\n"
+        yield f"data: {json.dumps({'type': 'meta', 'classification': classification, 'classification_error': classification_error}, ensure_ascii=False)}\n\n"
 
         in_thinking = False
         tag_buffer = ""
