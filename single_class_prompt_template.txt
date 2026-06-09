@@ -1,0 +1,136 @@
+Generate high-quality dermatology SFT QA data for one disease group based on the system prompt.
+
+Fill in the placeholders before use.
+
+Disease group information:
+- canonical_label: {disease_group}
+- display_name_zh: {display_name_zh}
+- display_name_en: {display_name_en}
+- retrieval_terms: {retrieval_terms}
+
+Allowed scenario values only:
+- definition
+- symptom_check
+- severity
+- contagion
+- care_advice
+- when_to_seek_care
+- uncertain_image_case
+- recurrence_concern
+- lifestyle_trigger
+- differential_hint
+
+Task:
+1. Generate {total_count} QA items for the disease group "{disease_group}".
+2. Generate:
+   - {zh_count} Chinese items
+   - {en_count} English items
+3. Split the output into:
+   - {conditioned_count} conditioned items using messages = [system, user, assistant]
+   - {plain_count} plain-text items using messages = [user, assistant]
+4. Every item must stay strictly related to this disease group.
+5. Do not treat this disease group as already confirmed. Treat it as a likely-related consultation context.
+6. In conditioned items, the system message must inject the candidate disease group, a confidence score, and a confidence_level label.
+7. Use a mix of confidence levels:
+   - high: 0.75-0.95
+   - medium: 0.45-0.74
+   - low: 0.20-0.44
+8. Sample different confidence scores within each range instead of reusing the same few numbers.
+9. Use the following mapping:
+   - confidence_level=high for scores in 0.75-0.95
+   - confidence_level=medium for scores in 0.45-0.74
+   - confidence_level=low for scores in 0.20-0.44
+
+Scenario coverage:
+10. Cover all of the following scenarios at least once:
+   - definition
+   - symptom_check
+   - severity
+   - contagion
+   - care_advice
+   - when_to_seek_care
+   - uncertain_image_case
+   - recurrence_concern
+   - lifestyle_trigger
+   - differential_hint
+11. At least {uncertain_count} items must explicitly include uncertainty-aware language such as:
+   - cannot be confirmed from the image alone
+   - more history is needed
+   - symptoms, location, and course matter
+   - should be differentiated from other skin conditions
+12. At least {red_flag_count} items must include red-flag reminders or when-to-seek-care guidance.
+
+Question diversity:
+13. Include a mix of:
+   - short colloquial questions
+   - symptom-based questions
+   - image-based questions
+   - recurrence or trigger questions
+   - triage questions
+   - concern-based questions from patients or family members
+14. At least 20% of the questions should be short and vague, such as:
+   - "这个严重吗？"
+   - "会传染吗？"
+   - "像不像湿疹？"
+   - "Do I need to see a doctor?"
+15. At least 20% should include symptom descriptions, duration, body location, recurrence, or triggers.
+
+Answer requirements:
+16. Answers must be safe, cautious, explainable, and patient-friendly.
+17. Most answers should briefly include:
+   - an initial direction or possibility
+   - a short explanation
+   - simple care or observation advice when suitable
+   - a reminder about when to seek care if needed
+18. In conditioned items, make the answer reflect the confidence level:
+   - high confidence: more focused, but still not definitive
+   - medium confidence: more cautious and balanced
+   - low confidence: more uncertainty-aware and differential-oriented
+19. In conditioned items, the answer must visibly reflect this disease group rather than staying at a generic skin-problem level.
+20. When appropriate, each conditioned answer should include one or two disease-specific clues, such as:
+   - typical body location
+   - common triggers
+   - distinguishing symptoms
+   - common differential diagnoses
+   - disease-specific red flags
+21. If language=zh, do not directly expose the raw English canonical label inside user or assistant messages.
+22. If language=zh, prefer natural Chinese disease-group wording such as “玫瑰痤疮相关方向”, “恶性皮肤病变这一类问题”, or “真菌感染相关情况”.
+23. If language=en, keep disease references natural in English and do not insert raw Chinese class names.
+24. Do not let all high-confidence answers collapse into one fixed wording style.
+25. Do not let all low-confidence answers collapse into one fixed disclaimer template.
+26. Do not generate explicit prescriptions, drug names, dosages, frequencies, durations, or treatment regimens.
+27. You may mention broad treatment categories only, such as anti-inflammatory care, antifungal treatment, allergy management, or dermatologist evaluation.
+28. Chinese answers should mostly stay around 80-220 Chinese characters.
+29. English answers should mostly stay around 40-120 words.
+30. Avoid textbook-style answers.
+31. Avoid answers that could still fit many unrelated disease groups after changing only a few words.
+
+Output requirements:
+32. Output JSON array only.
+33. Do not output explanations, markdown, titles, or extra notes.
+34. Conditioned items should use:
+{
+  "disease_group": "{disease_group}",
+  "language": "zh" or "en",
+  "scenario": "...",
+  "messages": [
+    {"role": "system", "content": "..."},
+    {"role": "user", "content": "..."},
+    {"role": "assistant", "content": "..."}
+  ]
+}
+35. Plain-text items may use:
+{
+  "disease_group": "{disease_group}",
+  "language": "zh" or "en",
+  "scenario": "...",
+  "messages": [
+    {"role": "user", "content": "..."},
+    {"role": "assistant", "content": "..."}
+  ]
+}
+36. In conditioned items, the system message should resemble runtime context, for example:
+   - 当前视觉候选疾病组：{disease_group}；confidence=0.68；confidence_level=medium。请结合该候选疾病组进行安全、克制、可解释的回答，不要将其视为最终确诊。
+   - Candidate disease group from the vision model: {disease_group}; confidence=0.68; confidence_level=medium. Answer cautiously based on this clue, without treating it as a final diagnosis.
+37. Do not generate multi-turn dialogue.
+38. Do not generate placeholders, template residue, or unfinished text.

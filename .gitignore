@@ -1,5 +1,6 @@
 .venv
-model_/SkinDisease
+model_/SkinDisease  
+model_/SkinDiseaseImages
 
 .env
 .idea

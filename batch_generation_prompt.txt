@@ -1,0 +1,131 @@
+Generate bilingual dermatology SFT QA data based on the system prompt.
+
+Allowed disease groups:
+1. acne_rosacea
+2. malignant_lesions
+3. atopic_dermatitis
+4. bullous_diseases
+5. bacterial_infections
+6. eczema
+7. drug_eruptions_exanthems
+8. hair_disorders
+9. viral_std_infections
+10. pigmentation_disorders
+11. connective_tissue_diseases
+12. melanoma_nevi_moles
+13. nail_disorders
+14. contact_dermatitis
+15. psoriasis_lichen_group
+16. infestations_bites
+17. benign_tumors
+18. systemic_disease_related
+19. fungal_infections
+20. urticaria_hives
+21. vascular_tumors
+22. vasculitis
+23. viral_infections
+
+Allowed scenario values only:
+- definition
+- symptom_check
+- severity
+- contagion
+- care_advice
+- when_to_seek_care
+- uncertain_image_case
+- recurrence_concern
+- lifestyle_trigger
+- differential_hint
+
+Task:
+1. Generate 230 QA items in total.
+2. Generate 10 items for each disease group.
+3. For each disease group, generate:
+   - 6 Chinese items
+   - 4 English items
+4. For each disease group, cover at least 4 different scenarios.
+5. For each disease group, at least one item must be from:
+   - symptom_check
+   - severity
+   - care_advice
+   - uncertain_image_case
+6. For each disease group, generate:
+   - 6 conditioned items using messages = [system, user, assistant]
+   - 4 plain-text items using messages = [user, assistant]
+7. In conditioned items, the system message must inject the candidate disease group.
+8. In conditioned items, inject both:
+   - a confidence score
+   - a confidence_level label
+9. Use a mix of:
+   - high confidence: 0.75-0.95
+   - medium confidence: 0.45-0.74
+   - low confidence: 0.20-0.44
+10. When generating confidence scores, sample different values inside each range instead of repeating the same few numbers.
+11. Use the following mapping:
+   - confidence_level=high for scores in 0.75-0.95
+   - confidence_level=medium for scores in 0.45-0.74
+   - confidence_level=low for scores in 0.20-0.44
+12. Make the answer style respond to confidence:
+   - high confidence: more focused but still cautious
+   - medium confidence: clearly conservative
+   - low confidence: emphasize uncertainty, differential considerations, and in-person evaluation when needed
+13. Across the whole output, maintain diverse question styles:
+   - short vague questions
+   - symptom-description questions
+   - image-based uncertainty questions
+   - recurrence concerns
+   - triage / whether to seek care questions
+14. In conditioned items, answers must visibly reflect the disease group rather than staying at a purely generic dermatology level.
+15. When appropriate, each conditioned answer should include one or two disease-specific clues, such as:
+   - typical body location
+   - common triggers
+   - distinguishing symptoms
+   - common differential diagnoses
+   - disease-specific red flags
+16. In Chinese items, do not directly expose raw English canonical labels inside user or assistant messages.
+17. In Chinese items, use natural Chinese disease-group wording instead, such as “玫瑰痤疮相关方向”, “恶性皮肤病变这一类问题”, or “真菌感染相关情况”.
+18. In English items, keep disease expressions natural in English and do not insert raw Chinese class names.
+
+Additional quality constraints:
+19. At least 20% of all questions should be short or colloquial.
+20. At least 20% should contain symptom description, body location, duration, trigger, or recurrence information.
+21. At least 15% should focus on whether the condition is serious or whether the user should seek in-person care.
+22. At least 15% should explicitly fit uncertain image-based scenarios.
+23. Do not let all classes follow the same QA template.
+24. Avoid repeating the same answer structure across disease groups.
+25. Do not let all high-confidence samples use the same wording pattern, and do not let all low-confidence samples collapse into the same disclaimer template.
+26. Avoid answers that would still work for many unrelated skin diseases after replacing only one or two words.
+
+Safety constraints:
+27. Do not include drug names, dosages, treatment regimens, or prescription-style instructions.
+28. General care advice is allowed.
+29. Red-flag reminders are encouraged where clinically appropriate.
+30. Keep the system positioned as consultation support, not direct diagnosis.
+
+Output requirements:
+31. Output JSON array only.
+32. Do not output any explanations before or after the array.
+33. Every item must follow this schema exactly:
+{
+  "disease_group": "...",
+  "language": "zh" or "en",
+  "scenario": "...",
+  "messages": [
+    {"role": "system", "content": "..."},
+    {"role": "user", "content": "..."},
+    {"role": "assistant", "content": "..."}
+  ]
+}
+34. Plain-text items may use the simpler schema:
+{
+  "disease_group": "...",
+  "language": "zh" or "en",
+  "scenario": "...",
+  "messages": [
+    {"role": "user", "content": "..."},
+    {"role": "assistant", "content": "..."}
+  ]
+}
+35. In conditioned samples, the system message should sound like runtime context, for example:
+   - 当前视觉候选疾病组：eczema；confidence=0.68；confidence_level=medium。请结合该候选疾病组进行安全、克制、可解释的回答，不要将其视为最终确诊。
+   - Candidate disease group from the vision model: eczema; confidence=0.68; confidence_level=medium. Answer cautiously based on this clue, without treating it as a final diagnosis.

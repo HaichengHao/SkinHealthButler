@@ -1,0 +1,168 @@
+{
+  "dataset_name": "SkinDiseaseImages",
+  "version": "v1",
+  "notes": "Canonical label scheme for multimodal dermatology QA. Raw dataset folders are preserved for training, while canonical labels are recommended for retrieval, prompting, and paper reporting.",
+  "classes": [
+    {
+      "raw_name": "Acne and Rosacea Photos",
+      "canonical_label": "acne_rosacea",
+      "display_name_en": "Acne and Rosacea",
+      "display_name_zh": "痤疮与玫瑰痤疮",
+      "retrieval_terms": ["acne", "rosacea", "papules", "pustules", "facial erythema"]
+    },
+    {
+      "raw_name": "Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions",
+      "canonical_label": "malignant_lesions",
+      "display_name_en": "Malignant Skin Lesions",
+      "display_name_zh": "恶性皮肤病变",
+      "retrieval_terms": ["actinic keratosis", "basal cell carcinoma", "malignant lesion", "skin cancer warning signs"]
+    },
+    {
+      "raw_name": "Atopic Dermatitis Photos",
+      "canonical_label": "atopic_dermatitis",
+      "display_name_en": "Atopic Dermatitis",
+      "display_name_zh": "特应性皮炎",
+      "retrieval_terms": ["atopic dermatitis", "eczema", "itching", "dry skin", "allergic inflammation"]
+    },
+    {
+      "raw_name": "Bullous Disease Photos",
+      "canonical_label": "bullous_diseases",
+      "display_name_en": "Bullous Diseases",
+      "display_name_zh": "大疱性皮肤病",
+      "retrieval_terms": ["bullous disease", "blister", "vesicle", "erosion", "autoimmune blistering disease"]
+    },
+    {
+      "raw_name": "Cellulitis Impetigo and other Bacterial Infections",
+      "canonical_label": "bacterial_infections",
+      "display_name_en": "Bacterial Skin Infections",
+      "display_name_zh": "细菌性皮肤感染",
+      "retrieval_terms": ["cellulitis", "impetigo", "bacterial infection", "erythema", "purulent lesion"]
+    },
+    {
+      "raw_name": "Eczema Photos",
+      "canonical_label": "eczema",
+      "display_name_en": "Eczema",
+      "display_name_zh": "湿疹",
+      "retrieval_terms": ["eczema", "itching", "rash", "inflammation", "barrier dysfunction"]
+    },
+    {
+      "raw_name": "Exanthems and Drug Eruptions",
+      "canonical_label": "drug_eruptions_exanthems",
+      "display_name_en": "Exanthems and Drug Eruptions",
+      "display_name_zh": "皮疹与药疹",
+      "retrieval_terms": ["drug eruption", "exanthem", "allergic rash", "widespread eruption", "adverse drug reaction"]
+    },
+    {
+      "raw_name": "Hair Loss Photos Alopecia and other Hair Diseases",
+      "canonical_label": "hair_disorders",
+      "display_name_en": "Hair Disorders",
+      "display_name_zh": "毛发疾病",
+      "retrieval_terms": ["alopecia", "hair loss", "scalp disorder", "patchy hair loss", "hair disease"]
+    },
+    {
+      "raw_name": "Herpes HPV and other STDs Photos",
+      "canonical_label": "viral_std_infections",
+      "display_name_en": "Viral and STD-Related Skin Infections",
+      "display_name_zh": "病毒性与性传播相关皮肤感染",
+      "retrieval_terms": ["herpes", "HPV", "STD", "viral infection", "genital lesion"]
+    },
+    {
+      "raw_name": "Light Diseases and Disorders of Pigmentation",
+      "canonical_label": "pigmentation_disorders",
+      "display_name_en": "Pigmentation Disorders",
+      "display_name_zh": "色素异常性疾病",
+      "retrieval_terms": ["vitiligo", "pigmentation disorder", "hypopigmentation", "hyperpigmentation", "sun damage"]
+    },
+    {
+      "raw_name": "Lupus and other Connective Tissue diseases",
+      "canonical_label": "connective_tissue_diseases",
+      "display_name_en": "Lupus and Connective Tissue Diseases",
+      "display_name_zh": "狼疮与结缔组织病",
+      "retrieval_terms": ["lupus", "connective tissue disease", "autoimmune rash", "photosensitivity", "malar rash"]
+    },
+    {
+      "raw_name": "Melanoma Skin Cancer Nevi and Moles",
+      "canonical_label": "melanoma_nevi_moles",
+      "display_name_en": "Melanoma, Nevi, and Moles",
+      "display_name_zh": "黑色素瘤、痣与色素痣",
+      "retrieval_terms": ["melanoma", "nevus", "mole", "pigmented lesion", "ABCDE rule"]
+    },
+    {
+      "raw_name": "Nail Fungus and other Nail Disease",
+      "canonical_label": "nail_disorders",
+      "display_name_en": "Nail Disorders",
+      "display_name_zh": "甲部疾病",
+      "retrieval_terms": ["nail fungus", "onychomycosis", "nail disorder", "nail thickening", "nail discoloration"]
+    },
+    {
+      "raw_name": "Poison Ivy Photos and other Contact Dermatitis",
+      "canonical_label": "contact_dermatitis",
+      "display_name_en": "Contact Dermatitis",
+      "display_name_zh": "接触性皮炎",
+      "retrieval_terms": ["contact dermatitis", "poison ivy", "allergic dermatitis", "irritant dermatitis", "exposure history"]
+    },
+    {
+      "raw_name": "Psoriasis pictures Lichen Planus and related diseases",
+      "canonical_label": "psoriasis_lichen_group",
+      "display_name_en": "Psoriasis and Lichen-Related Diseases",
+      "display_name_zh": "银屑病与苔藓样疾病",
+      "retrieval_terms": ["psoriasis", "lichen planus", "scaly plaque", "lichenified lesion", "chronic inflammatory dermatosis"]
+    },
+    {
+      "raw_name": "Scabies Lyme Disease and other Infestations and Bites",
+      "canonical_label": "infestations_bites",
+      "display_name_en": "Infestations and Bites",
+      "display_name_zh": "寄生虫感染与虫咬",
+      "retrieval_terms": ["scabies", "insect bite", "infestation", "mite", "itching at night"]
+    },
+    {
+      "raw_name": "Seborrheic Keratoses and other Benign Tumors",
+      "canonical_label": "benign_tumors",
+      "display_name_en": "Benign Tumors",
+      "display_name_zh": "良性皮肤肿瘤",
+      "retrieval_terms": ["seborrheic keratosis", "benign tumor", "benign skin lesion", "papule", "stuck-on lesion"]
+    },
+    {
+      "raw_name": "Systemic Disease",
+      "canonical_label": "systemic_disease_related",
+      "display_name_en": "Systemic Disease-Related Skin Findings",
+      "display_name_zh": "系统性疾病相关皮肤表现",
+      "retrieval_terms": ["systemic disease", "cutaneous manifestation", "internal disease", "red flag", "multisystem symptoms"]
+    },
+    {
+      "raw_name": "Tinea Ringworm Candidiasis and other Fungal Infections",
+      "canonical_label": "fungal_infections",
+      "display_name_en": "Fungal Infections",
+      "display_name_zh": "真菌感染",
+      "retrieval_terms": ["tinea", "ringworm", "candidiasis", "fungal infection", "scaling lesion"]
+    },
+    {
+      "raw_name": "Urticaria Hives",
+      "canonical_label": "urticaria_hives",
+      "display_name_en": "Urticaria and Hives",
+      "display_name_zh": "荨麻疹",
+      "retrieval_terms": ["urticaria", "hives", "wheal", "allergic reaction", "transient rash"]
+    },
+    {
+      "raw_name": "Vascular Tumors",
+      "canonical_label": "vascular_tumors",
+      "display_name_en": "Vascular Tumors",
+      "display_name_zh": "血管性肿瘤",
+      "retrieval_terms": ["vascular tumor", "hemangioma", "vascular lesion", "red-purple nodule"]
+    },
+    {
+      "raw_name": "Vasculitis Photos",
+      "canonical_label": "vasculitis",
+      "display_name_en": "Vasculitis",
+      "display_name_zh": "血管炎",
+      "retrieval_terms": ["vasculitis", "purpura", "vascular inflammation", "non-blanching rash", "systemic symptoms"]
+    },
+    {
+      "raw_name": "Warts Molluscum and other Viral Infections",
+      "canonical_label": "viral_infections",
+      "display_name_en": "Viral Skin Infections",
+      "display_name_zh": "病毒性皮肤感染",
+      "retrieval_terms": ["warts", "molluscum contagiosum", "viral infection", "papular viral lesion"]
+    }
+  ]
+}
